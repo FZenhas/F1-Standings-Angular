@@ -1,0 +1,60 @@
+<h1>{{ pageTitle }}</h1>
+
+<mat-form-field appearance="standard">
+  <mat-label>Pesquisar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Hamilton ou Mercedes" #input>
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> Position </th>
+      <td mat-cell *matCellDef="let item"> {{item.position}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="givenName">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let item"> {{item.Driver.givenName}} <b>{{item.Driver.familyName}}</b></td>
+    </ng-container>
+
+    <!-- Number Column -->
+    <ng-container matColumnDef="permanentNumber">
+      <th mat-header-cell *matHeaderCellDef> Number </th>
+      <td mat-cell *matCellDef="let item"> {{item.Driver.permanentNumber}} </td>
+    </ng-container>
+
+    <!-- Constructors Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Constructor </th>
+      <td mat-cell *matCellDef="let item"> <input type="button" class="btn btn-dark" value="{{item.Constructors.name}}" (click)="GoToDetail(item.Constructors.constructorId)">
+      </td>
+    </ng-container>
+
+    <!-- Points Column -->
+    <ng-container matColumnDef="points">
+      <th mat-header-cell *matHeaderCellDef> Points </th>
+      <td mat-cell *matCellDef="let item"> {{item.points}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell  *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let item" ><button class="btn btn-success" mat-button (click)="openDetails(item)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="loupe"></mat-icon></button>
+        <button class="btn btn-danger" mat-button (click)="deleteElement(item)"><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon></button></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+
+
+  <div *ngIf="shouldShow">
+    <app-driver-details [item]="selectedDriverStanding"></app-driver-details>
+</div>
+
